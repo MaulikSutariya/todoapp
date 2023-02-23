@@ -17,7 +17,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        screenOptions={{ headerShown: false }}
+        screenOptions={{ headerShown: false, animation: 'none' }}
         initialRouteName="Start"
       >
         <Stack.Screen name="Start" component={StarPage} />
@@ -29,7 +29,10 @@ export default function App() {
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Tasklist" component={Tasklist} />
         <Stack.Screen name="Addtask" component={Addtask} />
-        <Stack.Screen name="Projecttimetracker" component={Projecttimetracker} />
+        <Stack.Screen
+          name="Projecttimetracker"
+          component={Projecttimetracker}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
