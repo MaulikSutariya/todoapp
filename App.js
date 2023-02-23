@@ -10,6 +10,7 @@ import Signuppage from "./components/Signuppage";
 import Home from "./components/Home";
 import Tasklist from "./components/Tasklist";
 import Addtask from "./components/Addtask";
+import Projecttimetracker from "./components/Projecttimetracker";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -28,6 +29,7 @@ export default function App() {
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Tasklist" component={Tasklist} />
         <Stack.Screen name="Addtask" component={Addtask} />
+        <Stack.Screen name="Projecttimetracker" component={Projecttimetracker} />
       </Stack.Navigator>
     </NavigationContainer>
   );

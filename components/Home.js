@@ -13,6 +13,9 @@ function Home({ navigation }) {
   const navigateonboarding = () => {
     navigation.navigate("Tasklist");
   };
+  const navigateonboarding2 = () => {
+    navigation.navigate("Projecttimetracker");
+  };
 
   return (
     <View style={styles.Home}>
@@ -38,18 +41,15 @@ function Home({ navigation }) {
           source={require("../assets/Search.png")}
         />
       </View>
-      <View style={styles.timetracker}>
+      <Pressable style={styles.timetracker} onPress={navigateonboarding2}>
         <View>
           <Text style={styles.timetrackertext1}>Project time tracker</Text>
           <Text style={styles.timetrackertext2}>You can start tracking</Text>
         </View>
-        <Pressable style={styles.timetrackerbg}>
-          <Image
-            style={styles.timetrackerimg}
-            source={require("../assets/track.png")}
-          />
+        <Pressable style={styles.timetrackerbg} onPress={navigateonboarding2}>
+          <Image source={require("../assets/track.png")} />
         </Pressable>
-      </View>
+      </Pressable>
 
       <Text style={styles.mytask}>My tasks</Text>
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Text,
   View,
@@ -11,6 +11,17 @@ import {
 import { StatusBar } from "expo-status-bar";
 
 function Tasklist({ navigation }) {
+  const task = [
+    {
+      title: "Gym",
+      description: "Today Is Leg Day",
+    },
+    {
+      title: "Meeting",
+      description: "Today Important Meeting in Mumbai",
+    },
+  ];
+
   const navigateonboarding = () => {
     navigation.navigate("Addtask");
   };
@@ -49,30 +60,32 @@ function Tasklist({ navigation }) {
         showsHorizontalScrollIndicator={false}
         style={styles.alltask}
       >
-        <View style={styles.alltask1}>
-          <View style={styles.sessiontoday}>
-            <Text style={styles.tasknum}>Task 1</Text>
-            <View style={styles.sessiontodayTime}>
-              <Text style={styles.sessiontodayTimetext}>Meeting</Text>
-              <Text style={styles.sessiontodayTimetext2}>9:00 AM</Text>
+        {task.map((tasks, i) => {
+          return (
+            <View key={i} style={styles.alltask1}>
+              <View style={styles.sessiontoday}>
+                <Text style={styles.tasknum}>Task {i + 1}</Text>
+                <View style={styles.sessiontodayTime}>
+                  <Text style={styles.sessiontodayTimetext}>{tasks.title}</Text>
+                  <Text style={styles.sessiontodayTimetext2}>9:00 AM</Text>
+                </View>
+                <View style={styles.discuss}>
+                  <Text style={styles.discusstext}>{tasks.description}</Text>
+                  <Pressable style={styles.delete}>
+                    <Text style={styles.deletetext}>Delete</Text>
+                  </Pressable>
+                </View>
+              </View>
+              <View
+                style={{
+                  borderBottomColor: "black",
+                  borderBottomWidth: StyleSheet.hairlineWidth,
+                  marginTop: 20,
+                }}
+              />
             </View>
-            <View style={styles.discuss}>
-              <Text style={styles.discusstext}>
-                Discuss team tasks {"\n"} for the day
-              </Text>
-              <Pressable style={styles.delete}>
-                <Text style={styles.deletetext}>Delete</Text>
-              </Pressable>
-            </View>
-          </View>
-          <View
-            style={{
-              borderBottomColor: "black",
-              borderBottomWidth: StyleSheet.hairlineWidth,
-              marginTop: 20,
-            }}
-          />
-        </View>
+          );
+        })}
       </ScrollView>
     </View>
   );
@@ -162,6 +175,7 @@ const styles = StyleSheet.create({
     color: "#4B4B4B",
     fontSize: 14,
     fontWeight: "500",
+    width: "55%",
   },
   deletetext: {
     color: "white",

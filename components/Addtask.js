@@ -41,6 +41,10 @@ function Tasklist({ navigation }) {
       </View>
 
       <View style={styles.taskdesc}>
+        <Image
+          style={styles.bookimg}
+          source={require("../assets/bookandclock.png")}
+        />
         <View style={styles.searchSection}>
           <Image
             style={styles.searchIcon}
@@ -92,7 +96,7 @@ const styles = StyleSheet.create({
   addtaskpage: {
     padding: 20,
     height: "100%",
-    justifyContent:"space-between",
+    justifyContent: "space-between",
   },
   taskhead: {
     flexDirection: "row",
@@ -139,6 +143,7 @@ const styles = StyleSheet.create({
   },
   taskdesc: {
     // marginTop: 40,
+    alignItems: "center",
   },
   taskbtn: {
     backgroundColor: "#FABB18",
@@ -146,11 +151,15 @@ const styles = StyleSheet.create({
     height: 60,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom:20
+    marginBottom: 20,
   },
   taskbtntext: {
     fontSize: 20,
     color: "white",
     fontWeight: "600",
+  },
+  bookimg: {
+    marginTop: -40,
+    marginBottom: 15,
   },
 });
