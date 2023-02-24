@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -6,9 +6,9 @@ import {
   Image,
   Pressable,
   ScrollView,
+  AsyncStorage,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function Tasklist({ navigation }) {
   const [todoItems, setTodoItems] = useState([]);
@@ -19,27 +19,41 @@ function Tasklist({ navigation }) {
     navigation.navigate("Home");
   };
 
-  const handleAddTodoItem = async(title, description, formattedTime) => {
+  const handleAddTodoItem = async (title, description, formattedTime) => {
     setTodoItems([...todoItems, { title, description, formattedTime }]);
-    storeData()
+    storeData();
+  };
+  useEffect(() => {
+    storeData();
+    getData;
+  }, []);
+
+  const storeData = async () => {
+    AsyncStorage.setItem("key", JSON.stringify(todoItems), (error) => {
+      if (error) {
+        console.log("Error storing data: ", error);
+      } else {
+        console.log("Data stored successfully!");
+      }
+    });
   };
 
-  
-  const storeData = async (todoItems) => {
-    try {
-      await AsyncStorage.setItem('taskItems',JSON.stringify(todoItems))
-    } catch (e) {
-      // saving error
-    }
-  }
-
+  const getData = () => {
+    AsyncStorage.getItem("key", (error, value) => {
+      if (error) {
+        console.log("Error retrieving data: ", error);
+      } else {
+        console.log("Retrieved value: ", value);
+      }
+    });
+  };
+  console.log(getData());
+  //  console.log(storeData());
 
   const handleDeleteTodo = (id) => {
     const updatedTodos = todoItems.filter((todo) => todo.id !== id);
-    setTodoItems  (updatedTodos);
+    setTodoItems(updatedTodos);
   };
-
-
 
   const getCurrentDate = () => {
     var date = new Date().getDate();
@@ -87,7 +101,10 @@ function Tasklist({ navigation }) {
                 </View>
                 <View style={styles.discuss}>
                   <Text style={styles.discusstext}>{item.description}</Text>
-                  <Pressable style={styles.delete} onPress={() => handleDeleteTodo(item.id)}>
+                  <Pressable
+                    style={styles.delete}
+                    onPress={() => handleDeleteTodo(item.id)}
+                  >
                     <Text style={styles.deletetext}>Delete</Text>
                   </Pressable>
                 </View>
