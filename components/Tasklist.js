@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   },
   tasktimeandnum:{
     flexDirection:"row",
-    alignItems:"center",
+    alignItems:"flex-start",
     justifyContent:"space-between"
   },
   back: {
