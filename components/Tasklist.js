@@ -8,7 +8,7 @@ import {
   ScrollView,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function Tasklist({ navigation }) {
   const [todoItems, setTodoItems] = useState([]);
@@ -19,11 +19,27 @@ function Tasklist({ navigation }) {
     navigation.navigate("Home");
   };
 
-  const handleAddTodoItem = (title, description, formattedTime) => {
+  const handleAddTodoItem = async(title, description, formattedTime) => {
     setTodoItems([...todoItems, { title, description, formattedTime }]);
-    AsyncStorage.setItem("tasklis", JSON.stringify(todoItems));
-    console.log(todoItems);
+    storeData()
   };
+
+  
+  const storeData = async (todoItems) => {
+    try {
+      await AsyncStorage.setItem('taskItems',JSON.stringify(todoItems))
+    } catch (e) {
+      // saving error
+    }
+  }
+
+
+  const handleDeleteTodo = (id) => {
+    const updatedTodos = todoItems.filter((todo) => todo.id !== id);
+    setTodoItems  (updatedTodos);
+  };
+
+
 
   const getCurrentDate = () => {
     var date = new Date().getDate();
@@ -71,7 +87,7 @@ function Tasklist({ navigation }) {
                 </View>
                 <View style={styles.discuss}>
                   <Text style={styles.discusstext}>{item.description}</Text>
-                  <Pressable style={styles.delete}>
+                  <Pressable style={styles.delete} onPress={() => handleDeleteTodo(item.id)}>
                     <Text style={styles.deletetext}>Delete</Text>
                   </Pressable>
                 </View>
@@ -98,10 +114,10 @@ const styles = StyleSheet.create({
     padding: 20,
     height: "100%",
   },
-  tasktimeandnum:{
-    flexDirection:"row",
-    alignItems:"flex-start",
-    justifyContent:"space-between"
+  tasktimeandnum: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
   },
   back: {
     marginTop: 20,
@@ -169,7 +185,7 @@ const styles = StyleSheet.create({
     color: "#4B4B4B",
     fontSize: 14,
     fontWeight: "500",
-    marginRight:7
+    marginRight: 7,
   },
   discuss: {
     marginTop: 15,
