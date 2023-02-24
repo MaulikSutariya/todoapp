@@ -4,29 +4,25 @@ import {
   View,
   StyleSheet,
   Image,
-  TextInput,
   Pressable,
   ScrollView,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function Tasklist({ navigation }) {
-  const task = [
-    {
-      title: "Gym",
-      description: "Today Is Leg Day",
-    },
-    {
-      title: "Meeting",
-      description: "Today Important Meeting in Mumbai",
-    },
-  ];
-
+  const [todoItems, setTodoItems] = useState([]);
   const navigateonboarding = () => {
-    navigation.navigate("Addtask");
+    navigation.navigate("Addtask", { handleAddTodoItem });
   };
   const navigateonboarding2 = () => {
     navigation.navigate("Home");
+  };
+
+  const handleAddTodoItem = (title, description, formattedTime) => {
+    setTodoItems([...todoItems, { title, description, formattedTime }]);
+    AsyncStorage.setItem("tasklis", JSON.stringify(todoItems));
+    console.log(todoItems);
   };
 
   const getCurrentDate = () => {
@@ -60,17 +56,21 @@ function Tasklist({ navigation }) {
         showsHorizontalScrollIndicator={false}
         style={styles.alltask}
       >
-        {task.map((tasks, i) => {
+        {todoItems.map((item, i) => {
           return (
             <View key={i} style={styles.alltask1}>
               <View style={styles.sessiontoday}>
-                <Text style={styles.tasknum}>Task {i + 1}</Text>
+                <View style={styles.tasktimeandnum}>
+                  <Text style={styles.tasknum}>Task {i + 1}</Text>
+                  <Text style={styles.sessiontodayTimetext2}>
+                    {item.formattedTime}
+                  </Text>
+                </View>
                 <View style={styles.sessiontodayTime}>
-                  <Text style={styles.sessiontodayTimetext}>{tasks.title}</Text>
-                  <Text style={styles.sessiontodayTimetext2}>9:00 AM</Text>
+                  <Text style={styles.sessiontodayTimetext}>{item.title}</Text>
                 </View>
                 <View style={styles.discuss}>
-                  <Text style={styles.discusstext}>{tasks.description}</Text>
+                  <Text style={styles.discusstext}>{item.description}</Text>
                   <Pressable style={styles.delete}>
                     <Text style={styles.deletetext}>Delete</Text>
                   </Pressable>
@@ -98,6 +98,11 @@ const styles = StyleSheet.create({
     padding: 20,
     height: "100%",
   },
+  tasktimeandnum:{
+    flexDirection:"row",
+    alignItems:"center",
+    justifyContent:"space-between"
+  },
   back: {
     marginTop: 20,
   },
@@ -115,7 +120,7 @@ const styles = StyleSheet.create({
   },
   edittask: {
     backgroundColor: "black",
-    height: 40,
+    height: 42,
     width: 100,
     borderRadius: 7,
     padding: 5,
@@ -164,6 +169,7 @@ const styles = StyleSheet.create({
     color: "#4B4B4B",
     fontSize: 14,
     fontWeight: "500",
+    marginRight:7
   },
   discuss: {
     marginTop: 15,

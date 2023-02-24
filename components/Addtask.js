@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Text,
   View,
@@ -6,16 +6,31 @@ import {
   Image,
   TextInput,
   Pressable,
+  KeyboardAvoidingView
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 
-function Tasklist({ navigation }) {
+function Tasklist({ navigation, route  }) {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+
+  const {handleAddTodoItem} = route.params;
+  const currentTime = new Date();
+  const formattedTime = currentTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+
   const navigateonboarding = () => {
     navigation.navigate("Tasklist");
   };
-  const navigateonboarding2 = () => {
+
+  const handleAddTodo = () => {
     navigation.navigate("Tasklist");
+    setTitle("");
+    setDescription("");
+    handleAddTodoItem(title,description,formattedTime);
   };
+  
+
 
   const getCurrentDate = () => {
     var date = new Date().getDate();
@@ -28,7 +43,8 @@ function Tasklist({ navigation }) {
     return monthName + " " + date + " ," + year;
   };
   return (
-    <View style={styles.addtaskpage}>
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+     style={styles.addtaskpage}>
       <StatusBar style="dark" />
       <View style={styles.taskhead}>
         <Pressable onPress={navigateonboarding}>
@@ -53,9 +69,8 @@ function Tasklist({ navigation }) {
           <TextInput
             style={styles.input}
             placeholder="Enter Task Title"
-            onChangeText={(searchString) => {
-              this.setState({ searchString });
-            }}
+            value={title}
+            onChangeText={(text) => setTitle(text)}
             underlineColorAndroid="transparent"
           />
           <Image
@@ -71,10 +86,9 @@ function Tasklist({ navigation }) {
           <TextInput
             style={styles.input}
             placeholder="Enter Task Description"
-            onChangeText={(searchString) => {
-              this.setState({ searchString });
-            }}
             underlineColorAndroid="transparent"
+            value={description}
+            onChangeText={(text) => setDescription(text)}
           />
           <Image
             style={styles.searchIcon}
@@ -83,10 +97,10 @@ function Tasklist({ navigation }) {
         </View>
       </View>
 
-      <Pressable style={styles.taskbtn} onPress={navigateonboarding2}>
+      <Pressable style={styles.taskbtn} onPress={handleAddTodo}>
         <Text style={styles.taskbtntext}>Save </Text>
       </Pressable>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -97,6 +111,7 @@ const styles = StyleSheet.create({
     padding: 20,
     height: "100%",
     justifyContent: "space-between",
+    flex:1
   },
   taskhead: {
     flexDirection: "row",

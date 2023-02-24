@@ -17,7 +17,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        screenOptions={{ headerShown: false, animation: 'none' }}
+        screenOptions={{ headerShown: false, animation: "none" }}
         initialRouteName="Start"
       >
         <Stack.Screen name="Start" component={StarPage} />
