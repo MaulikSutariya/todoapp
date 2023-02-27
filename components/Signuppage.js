@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Text,
   View,
@@ -10,6 +10,11 @@ import {
 import { StatusBar } from 'expo-status-bar';
 
 function Signuppage({ navigation }) {
+  const [userName,setUserName]=useState('')
+  const [email,setEmail]=useState('')
+  const [password,setPassword]=useState('')
+  const [confirmPassword,setConfirmPassword]=useState('')
+  
   const navigateonboarding = () => {
     navigation.navigate("Signinpage");
   };

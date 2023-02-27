@@ -1,17 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Text,
   View,
   StyleSheet,
   Image,
   Pressable,
-  ScrollView,
-  AsyncStorage,
+
+  FlatList,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function Tasklist({ navigation }) {
   const [todoItems, setTodoItems] = useState([]);
+  const [todosValue, setTodosValue] = useState([]);
+  const flatListRef = useRef(null);
   const navigateonboarding = () => {
     navigation.navigate("Addtask", { handleAddTodoItem });
   };
@@ -20,40 +23,45 @@ function Tasklist({ navigation }) {
   };
 
   const handleAddTodoItem = async (title, description, formattedTime) => {
-    setTodoItems([...todoItems, { title, description, formattedTime }]);
+    setTodoItems([
+      ...todoItems,
+      { title, description, formattedTime },
+   
+    ]);
     storeData();
+    flatListRef.current.scrollToEnd();
   };
-  useEffect(() => {
-    storeData();
-    getData;
-  }, []);
 
   const storeData = async () => {
-    AsyncStorage.setItem("key", JSON.stringify(todoItems), (error) => {
-      if (error) {
-        console.log("Error storing data: ", error);
-      } else {
-        console.log("Data stored successfully!");
-      }
-    });
+    const todos = JSON.stringify(todoItems);
+    try {
+      await AsyncStorage.setItem("TODO_ITEMS", JSON.stringify(todos));
+    } catch (e) {
+      console.log(e);
+    }
   };
 
-  const getData = () => {
-    AsyncStorage.getItem("key", (error, value) => {
-      if (error) {
-        console.log("Error retrieving data: ", error);
-      } else {
-        console.log("Retrieved value: ", value);
-      }
-    });
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem("TODO_ITEMS");
+      setTodosValue(JSON.parse(value));
+      setTodoItems(todosValue);
+      console.log(todosValue);
+      return todosValue;
+    } catch (e) {
+      console.log(e);
+    }
   };
-  console.log(getData());
-  //  console.log(storeData());
 
-  const handleDeleteTodo = (id) => {
-    const updatedTodos = todoItems.filter((todo) => todo.id !== id);
-    setTodoItems(updatedTodos);
-  };
+
+  useEffect(() => {
+    getData();
+  }, [handleAddTodoItem]);
+
+  // const handleDeleteTodo = (id) => {
+  //   const updatedTodos = todoItems.filter((todo) => todo.id !== id);
+  //   setTodoItems(updatedTodos);
+  // };
 
   const getCurrentDate = () => {
     var date = new Date().getDate();
@@ -65,6 +73,7 @@ function Tasklist({ navigation }) {
     var year = new Date().getFullYear();
     return monthName + " " + date + " ," + year;
   };
+
   return (
     <View style={styles.tasklist}>
       <StatusBar style="dark" />
@@ -81,45 +90,52 @@ function Tasklist({ navigation }) {
         </Pressable>
       </View>
 
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        style={styles.alltask}
-      >
-        {todoItems.map((item, i) => {
-          return (
-            <View key={i} style={styles.alltask1}>
-              <View style={styles.sessiontoday}>
-                <View style={styles.tasktimeandnum}>
-                  <Text style={styles.tasknum}>Task {i + 1}</Text>
-                  <Text style={styles.sessiontodayTimetext2}>
-                    {item.formattedTime}
-                  </Text>
+
+        <FlatList
+          data={todosValue}
+          ref={flatListRef}
+          showsVerticalScrollIndicator={false}
+          alwaysBounceVertical={false}
+          style={styles.alltask}
+          renderItem={(itemData) => {
+             (
+              <View style={styles.alltask1}>
+                <View style={styles.sessiontoday}>
+                  <View style={styles.tasktimeandnum}>
+                    <Text style={styles.tasknum}>
+                      Task {itemData.index + 1}
+                    </Text>
+                    <Text style={styles.sessiontodayTimetext2}>
+                      {itemData.item.formattedTime}
+                    </Text>
+                  </View>
+                  <View style={styles.sessiontodayTime}>
+                    <Text style={styles.sessiontodayTimetext}>
+                      {itemData.item.title}
+                    </Text>
+                  </View>
+                  <View style={styles.discuss}>
+                    <Text style={styles.discusstext}>
+                      {itemData.item.description}
+                    </Text>
+                    <Pressable style={styles.delete}>
+                      <Text style={styles.deletetext}>Delete</Text>
+                    </Pressable>
+                  </View>
                 </View>
-                <View style={styles.sessiontodayTime}>
-                  <Text style={styles.sessiontodayTimetext}>{item.title}</Text>
-                </View>
-                <View style={styles.discuss}>
-                  <Text style={styles.discusstext}>{item.description}</Text>
-                  <Pressable
-                    style={styles.delete}
-                    onPress={() => handleDeleteTodo(item.id)}
-                  >
-                    <Text style={styles.deletetext}>Delete</Text>
-                  </Pressable>
-                </View>
+                <View
+                  style={{
+                    borderBottomColor: "black",
+                    borderBottomWidth: StyleSheet.hairlineWidth,
+                    marginTop: 20,
+                  }}
+                />
               </View>
-              <View
-                style={{
-                  borderBottomColor: "black",
-                  borderBottomWidth: StyleSheet.hairlineWidth,
-                  marginTop: 20,
-                }}
-              />
-            </View>
-          );
-        })}
-      </ScrollView>
+            );
+          }}
+        
+        />
+    
     </View>
   );
 }

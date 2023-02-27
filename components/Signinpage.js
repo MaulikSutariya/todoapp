@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Text,
   View,
@@ -10,6 +10,9 @@ import {
 import { StatusBar } from "expo-status-bar";
 
 function Signinpage({ navigation }) {
+  const [email,setEmail]=useState("")
+  const [password,setPassword]=useState("")
+
   const navigateonboarding = () => {
     navigation.navigate("Signuppage");
   };
@@ -28,9 +31,8 @@ function Signinpage({ navigation }) {
         <TextInput
           style={styles.input}
           placeholder="abc@email.com"
-          onChangeText={(searchString) => {
-            this.setState({ searchString });
-          }}
+          value={email}
+          onChangeText={txt=>setEmail(txt)}
           underlineColorAndroid="transparent"
         />
         <Image
@@ -47,6 +49,8 @@ function Signinpage({ navigation }) {
           password={true}
           style={styles.input}
           placeholder="Your password"
+          value={password}
+          onChangeText={txt=>setPassword(txt)}
           underlineColorAndroid="transparent"
         />
         <Image
