@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
   signinbtn: {
     backgroundColor: "#FABB18",
     padding: 20,
-    borderRadius: "12",
+    borderRadius: 12,
     marginTop: 25,
   },
   signinbtntext: {

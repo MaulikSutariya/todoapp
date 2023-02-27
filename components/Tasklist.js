@@ -5,7 +5,6 @@ import {
   StyleSheet,
   Image,
   Pressable,
-
   FlatList,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
@@ -23,11 +22,7 @@ function Tasklist({ navigation }) {
   };
 
   const handleAddTodoItem = async (title, description, formattedTime) => {
-    setTodoItems([
-      ...todoItems,
-      { title, description, formattedTime },
-   
-    ]);
+    setTodoItems([...todoItems, { title, description, formattedTime }]);
     storeData();
     flatListRef.current.scrollToEnd();
   };
@@ -53,15 +48,14 @@ function Tasklist({ navigation }) {
     }
   };
 
-
   useEffect(() => {
     getData();
   }, [handleAddTodoItem]);
 
-  // const handleDeleteTodo = (id) => {
-  //   const updatedTodos = todoItems.filter((todo) => todo.id !== id);
-  //   setTodoItems(updatedTodos);
-  // };
+  const handleDeleteTodo = (id) => {
+    const updatedTodos = todoItems.filter((todo) => todo.id !== id);
+    setTodoItems(updatedTodos);
+  };
 
   const getCurrentDate = () => {
     var date = new Date().getDate();
@@ -90,52 +84,48 @@ function Tasklist({ navigation }) {
         </Pressable>
       </View>
 
-
-        <FlatList
-          data={todosValue}
-          ref={flatListRef}
-          showsVerticalScrollIndicator={false}
-          alwaysBounceVertical={false}
-          style={styles.alltask}
-          renderItem={(itemData) => {
-             (
-              <View style={styles.alltask1}>
-                <View style={styles.sessiontoday}>
-                  <View style={styles.tasktimeandnum}>
-                    <Text style={styles.tasknum}>
-                      Task {itemData.index + 1}
-                    </Text>
-                    <Text style={styles.sessiontodayTimetext2}>
-                      {itemData.item.formattedTime}
-                    </Text>
-                  </View>
-                  <View style={styles.sessiontodayTime}>
-                    <Text style={styles.sessiontodayTimetext}>
-                      {itemData.item.title}
-                    </Text>
-                  </View>
-                  <View style={styles.discuss}>
-                    <Text style={styles.discusstext}>
-                      {itemData.item.description}
-                    </Text>
-                    <Pressable style={styles.delete}>
-                      <Text style={styles.deletetext}>Delete</Text>
-                    </Pressable>
-                  </View>
-                </View>
-                <View
-                  style={{
-                    borderBottomColor: "black",
-                    borderBottomWidth: StyleSheet.hairlineWidth,
-                    marginTop: 20,
-                  }}
-                />
+      <FlatList
+        data={todosValue}
+        ref={flatListRef}
+        showsVerticalScrollIndicator={false}
+        alwaysBounceVertical={false}
+        style={styles.alltask}
+        renderItem={(itemData) => {
+          <View style={styles.alltask1}>
+            <View style={styles.sessiontoday}>
+              <View style={styles.tasktimeandnum}>
+                <Text style={styles.tasknum}>Task {itemData.index + 1}</Text>
+                <Text style={styles.sessiontodayTimetext2}>
+                  {itemData.item.formattedTime}
+                </Text>
               </View>
-            );
-          }}
-        
-        />
-    
+              <View style={styles.sessiontodayTime}>
+                <Text style={styles.sessiontodayTimetext}>
+                  {itemData.item.title}
+                </Text>
+              </View>
+              <View style={styles.discuss}>
+                <Text style={styles.discusstext}>
+                  {itemData.item.description}
+                </Text>
+                <Pressable
+                  style={styles.delete}
+                  onPress={() => handleDeleteTodo(itemData.index)}
+                >
+                  <Text style={styles.deletetext}>Delete</Text>
+                </Pressable>
+              </View>
+            </View>
+            <View
+              style={{
+                borderBottomColor: "black",
+                borderBottomWidth: StyleSheet.hairlineWidth,
+                marginTop: 20,
+              }}
+            />
+          </View>;
+        }}
+      />
     </View>
   );
 }
