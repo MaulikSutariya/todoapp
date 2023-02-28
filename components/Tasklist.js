@@ -41,7 +41,6 @@ function Tasklist({ navigation }) {
       const value = await AsyncStorage.getItem("TODO_ITEMS");
       setTodosValue(JSON.parse(value));
       setTodoItems(todosValue);
-      console.log(todosValue);
       return todosValue;
     } catch (e) {
       console.log(e);

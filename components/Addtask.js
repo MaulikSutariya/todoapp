@@ -158,7 +158,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   taskdesc: {
-    // marginTop: 40,
     alignItems: "center",
   },
   taskbtn: {
