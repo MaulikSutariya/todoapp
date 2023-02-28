@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, Image } from "react-native";
 import { StatusBar } from 'expo-status-bar';
 
 function Onboarding1({ navigation }) {
+
   const navigateonboarding = () => {
     navigation.navigate("Onboarding2");
   };

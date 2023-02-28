@@ -31,6 +31,7 @@ function Tasklist({ navigation }) {
     const todos = JSON.stringify(todoItems);
     try {
       await AsyncStorage.setItem("TODO_ITEMS", JSON.stringify(todos));
+      console.log(todos,"todostodostodos");
     } catch (e) {
       console.log(e);
     }

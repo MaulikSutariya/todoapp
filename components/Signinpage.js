@@ -13,6 +13,8 @@ function Signinpage({ navigation }) {
   const [email,setEmail]=useState("")
   const [password,setPassword]=useState("")
 
+  
+
   const navigateonboarding = () => {
     navigation.navigate("Signuppage");
   };

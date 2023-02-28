@@ -25,7 +25,7 @@ function Tasklist({ navigation, route  }) {
   };
 
   const handleAddTodo = () => {
-    navigation.navigate("Tasklist");
+    navigation.setOptions("Tasklist");
     setTitle("");
     setDescription("");
     handleAddTodoItem(title,description,formattedTime);
